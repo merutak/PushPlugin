@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.res.Resources;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -98,10 +99,15 @@ public class GCMIntentService extends GCMBaseIntentService {
 			} catch (NumberFormatException e) {}
 		}
 		
+		Resources r = getResources();
+		int noticonId = r.getIdentifier("noticon", "drawable", context.getPackageName());
+		if (noticonId == 0) {
+			noticonId = context.getApplicationInfo().icon;
+		}
 		NotificationCompat.Builder mBuilder =
 			new NotificationCompat.Builder(context)
 				.setDefaults(defaults)
-				.setSmallIcon(context.getApplicationInfo().icon)
+				.setSmallIcon(noticonId)
 				.setWhen(System.currentTimeMillis())
 				.setContentTitle(extras.getString("title"))
 				.setTicker(extras.getString("title"))
